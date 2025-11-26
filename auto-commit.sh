@@ -1,8 +1,9 @@
+
 #!/bin/bash
 # Auto-commit and push script for Unity project
 # This script monitors for changes and automatically commits and pushes to Git
 # while working alongside Unity Version Control
-
+echo "Starting Git Auto-Commit Script..."
 # Configuration
 WATCH_INTERVAL=60  # Check for changes every 60 seconds
 BRANCH="main"      # Branch to push to
