@@ -1,16 +1,23 @@
-using UnityEngine;
-
-public class Player :MonoBehaviour
+namespace MyGame.Shared
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class Player
     {
-        
-    }
+        public string PlayerName;
+        public string Email;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public GameSession CurrentSession;
+
+        public void JoinSession(GameSession session)
+        {
+            CurrentSession = session;
+            session.AddPlayer(this);
+        }
+
+        public void LeaveSession()
+        {
+            if (CurrentSession == null) return;
+            CurrentSession.RemovePlayer(this);
+            CurrentSession = null;
+        }
     }
 }

@@ -1,16 +1,40 @@
-using UnityEngine;
-
-public class Pion : MonoBehaviour 
+namespace MyGame.Shared
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public enum MoveDirection
     {
-        
+        Forward,
+        Backward,
+        Left,
+        Right
     }
 
-    // Update is called once per frame
-    void Update()
+    public class Pion
     {
-        
+        public int X;
+        public int Y;
+
+        public void Move(MoveDirection direction)
+        {
+            switch (direction)
+            {
+                case MoveDirection.Forward:
+                    Y += 1;
+                    break;
+                case MoveDirection.Backward:
+                    Y -= 1;
+                    break;
+                case MoveDirection.Left:
+                    X -= 1;
+                    break;
+                case MoveDirection.Right:
+                    X += 1;
+                    break;
+            }
+        }
+
+        public void MoveForward()  => Move(MoveDirection.Forward);
+        public void MoveBackward() => Move(MoveDirection.Backward);
+        public void MoveLeft()     => Move(MoveDirection.Left);
+        public void MoveRight()    => Move(MoveDirection.Right);
     }
 }

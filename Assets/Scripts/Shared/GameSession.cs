@@ -1,7 +1,35 @@
-using UnityEngine;
+using System.Collections.Generic;
 
-public class GameSession :MonoBehaviour
+namespace MyGame.Shared
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public class GameSession
+    {
+        public string SessionId;
+        public int MaxPlayers;
 
+        public List<Player> Players = new List<Player>();
+
+        public bool CanAcceptPlayer()
+        {
+            return Players.Count < MaxPlayers;
+        }
+
+        public void AddPlayer(Player player)
+        {
+            if (Players.Contains(player)) return;
+            if (!CanAcceptPlayer()) return;
+
+            Players.Add(player);
+            player.CurrentSession = this;
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            if (!Players.Contains(player)) return;
+
+            Players.Remove(player);
+            if (player.CurrentSession == this)
+                player.CurrentSession = null;
+        }
+    }
 }
