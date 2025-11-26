@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Auto-commit and push script for Unity project
 # This script monitors for changes and automatically commits and pushes to Git
 # while working alongside Unity Version Control
