@@ -4,23 +4,23 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 
+
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
+    public static GameManager Instance;
     // Référence à ton gestionnaire de sessions
     [SerializeField] 
     public SessionManager sessionManager;
 
     // Config globale du jeu
-    [SerializeField]
-    public Config config;
+  //  [SerializeField]
+    //public Config config;
 
     // Session de jeu en cours
     public GameSession currentSession { get; private set; }
 
     public bool currentMatchInProgress = false;
-
+  
     void Awake()
     {
         // Singleton pattern — s'assurer qu'une seule instance existe

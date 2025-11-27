@@ -2,6 +2,20 @@ using UnityEngine;
 using System.Collections.Generic; 
 public class SessionManager : MonoBehaviour
 {
+    public SessionManager Instance { get; set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     [SerializeField] GameSession session;
     public int maxSessions;
     public int activeSessionsCount;
