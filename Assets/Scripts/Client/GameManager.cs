@@ -3,66 +3,95 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public GameManager()
+
+    // Référence à ton gestionnaire de sessions
+    [SerializeField] 
+    public SessionManager sessionManager;
+
+    // Config globale du jeu
+    [SerializeField]
+    public Config config;
+
+    // Session de jeu en cours
+    public GameSession currentSession { get; private set; }
+
+    public bool currentMatchInProgress = false;
+
+    void Awake()
     {
+        // Singleton pattern — s'assurer qu'une seule instance existe
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
     }
-    
 
-
-    [SerializeField]
-    public SessionManager sessionManager;
-    [SerializeField]
-    public Config config;
-    [SerializeField]
-    public GameSession currentSession;
-    public bool currentMatchInProgress=false;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Initialise / démarre la partie si aucune en cours
     public void InitGame()
     {
-        if( currentMatchInProgress==false)
+        if (!currentMatchInProgress)
         {
-            startMatch();
-        currentMatchInProgress=true;
+            StartMatch();
+            currentMatchInProgress = true;
         }
         else
         {
-            
-            Debug.Log("Match already in progress");
+            Debug.LogWarning("Match already in progress");
         }
     }
-    public void startMatch()
-    {
-            currentSession = sessionManager.CreateSession();
-          
-            Debug.Log("Match started" + GameSession.SessionId+   " with " + currentSession.Players.Count + " players."   );
 
-        
-    }
-    public void endMatch()
+    // Démarrage d'une nouvelle session
+    public void StartMatch()
     {
+        if (sessionManager == null)
+        {
+            Debug.LogError("SessionManager not set on GameManager!");
+            return;
+        }
 
+        currentSession = sessionManager.CreateSession();
+        if (currentSession != null)
+        {
+            Debug.Log("Match started: " + currentSession.SessionId +
+                      " with " + currentSession.Players.Count + " players.");
+        }
+        else
+        {
+            Debug.LogError("Failed to create session");
+        }
     }
+
+    public void EndMatch()
+    {
+        // Ton code de fin de match ici
+        currentMatchInProgress = false;
+        currentSession = null;
+    }
+
     void Start()
     {
         InitGame();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // logique par frame, si besoin
+    }
+
+    // Optionnel : méthode utilitaire pour redémarrer ou reset game
+    public void ResetGame()
+    {
+        EndMatch();
+        InitGame();
     }
 }
