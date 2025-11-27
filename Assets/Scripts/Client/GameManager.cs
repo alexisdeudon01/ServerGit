@@ -1,21 +1,31 @@
 using System.IO;
 using UnityEngine;
-
+using System;
+using System.Collections.Generic;
+using Unity.Netcode;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    if (Instance == null)
+    public GameManager()
     {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    else
-    {
-        Destroy(gameObject);
-    }
-    public NetworkManager net;
+    
+
+
+    [SerializeField]
     public SessionManager sessionManager;
+    [SerializeField]
     public Config config;
+    [SerializeField]
     public GameSession currentSession;
     public bool currentMatchInProgress=false;
     
@@ -35,9 +45,9 @@ public class GameManager : MonoBehaviour
     }
     public void startMatch()
     {
-            currentSession = new GameSession();
+            currentSession = sessionManager.CreateSession();
           
-            Debug.Log("Match started" + currentSession.SessionId+   " with " + currentSession.Players.Count + " players."   );
+            Debug.Log("Match started" + GameSession.SessionId+   " with " + currentSession.Players.Count + " players."   );
 
         
     }

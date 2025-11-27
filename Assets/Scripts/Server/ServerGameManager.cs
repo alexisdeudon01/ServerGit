@@ -9,7 +9,7 @@ public class ServerGameManager : MonoBehaviour
     public void createSession()
     {
         currentSession = new GameSession();
-        currentSession.SessionId = System.Guid.NewGuid().ToString();
+
       //  currentSession.MaxPlayers = config.maxPlayersPerSession;
         currentMatchInProgress = true;
         Debug.Log("Match started");

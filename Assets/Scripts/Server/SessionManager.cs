@@ -1,25 +1,31 @@
 using UnityEngine;
-
+using System.Collections.Generic; 
 public class SessionManager : MonoBehaviour
 {
     [SerializeField] GameSession session;
     public int maxSessions;
     public int activeSessionsCount;
-
-
-    public void CreateSession()
+    public List<GameSession> sessions = new List<GameSession>();
+    public List<GameSession> GetAllSessions()
     {
-        if (activeSessionsCount >= maxSessions) return;
+        return sessions;
+    }
+
+    public GameSession CreateSession()
+    {
+        if (activeSessionsCount >= maxSessions) return null;
 
         session = new GameSession();
         activeSessionsCount++;
+        sessions.Add(session);
+
+        return session;
     }
     public GameSession FindSessionForPlayer(Player player)
     {
-        List<GameSession> sessions = new List<GameSession>(GameObject.FindGameObjectsWithTag("GameSession"));
-        for each(GameSession gs in sessions)
+        foreach(GameSession gs in GameManager.Instance.sessionManager.GetAllSessions())
         {
-            for each(Player p in gs.Players)
+            foreach(Player p in gs.Players)
             {
                 if (p == player)
                 {

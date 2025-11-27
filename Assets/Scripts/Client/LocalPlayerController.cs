@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 public class LocalPlayerController  : NetworkBehaviour
 {
-
+ 
     public Player localplayer;
     public Pion localpion;
     public void HandleLocalMovement(PlayerInput input)
@@ -15,7 +15,7 @@ public class LocalPlayerController  : NetworkBehaviour
             Debug.Log("Processing local movement input for player: " + OwnerClientId);
             // Send move command to server
             var serverNetManager = FindObjectOfType<ClientNetworkManager>();
-            serverNetManager.sendMoveCommand(localpion);
+       //     serverNetManager.sendMoveCommand(localpion);
         }
     }
     // Start is called once before the first executi

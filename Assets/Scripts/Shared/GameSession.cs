@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
     public class GameSession
     {
-        public static string SessionId=0;
+        public static int SessionId=0;
         public int MaxPlayers;
 
         public List<Player> Players = new List<Player>();

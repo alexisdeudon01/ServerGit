@@ -12,7 +12,7 @@ public class ClientNetworkManager : NetworkBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         
            
@@ -30,18 +30,20 @@ public class ClientNetworkManager : NetworkBehaviour
         {
             Debug.Log("Client started successfully");
             isConnected = true;
-            net.OnClientConnectedCallback+=onClientConnected;
-            net.OnClientDisconnectedCallback+=onClientDisconnected;
+          net.OnClientConnectedCallback += OnClientConnected;
+        net.OnClientDisconnectedCallback += OnClientDisconnected;
+    
         }   
+    }
 
-public void onClientConnected(ulong clientId)
+public   void OnClientConnected(ulong clientId)
     {
         Debug.Log("Client connected with ID: " + clientId);
         isConnected = true;
         Player player= new Player("Player"+clientId, "player@email.com");
         Debug.Log("Player created: " + player.PlayerName);
-        string line;        
-        for each(GameSession gs in sessionManager.GetAllSessions())
+        String line="";        
+        foreach(GameSession gs in GameManager.Instance.sessionManager.GetAllSessions())
         {
             Debug.Log("Checking session: " + gs.SessionId+" with " + gs.Players.Count + " players.  Max players: " + gs.MaxPlayers      );
               Console.Write("Press Y to join this session or N to skip: ");
@@ -49,7 +51,7 @@ public void onClientConnected(ulong clientId)
                 if (line == "Y" || line == "y")
                 {
                     
-                sessionManager.AddPlayerToSession(player, gs);
+                GameManager.Instance.sessionManager.AddPlayerToSession(player, gs);
                 Debug.Log("Player " + player.PlayerName + " added to session " + gs.SessionId);
                 
                 return;
@@ -60,11 +62,11 @@ public void onClientConnected(ulong clientId)
         sessionManager.AddPlayerToSession(player, sessionManager.GetLatestSession());
         Debug.Log("Player " + player.PlayerName + " added to new session " + sessionManager.GetLatestSession().SessionId);
     }
-    public void onClientDisconnected(ulong clientId)
+    public  void OnClientDisconnected(ulong clientId)
     {
-        for each(GameSession gs in GameManager.Instance.sessionManager.GetAllSessions())
+        foreach(GameSession gs in GameManager.Instance.sessionManager.GetAllSessions())
         {
-            for each(Player p in gs.Players)
+            foreach(Player p in gs.Players)
             {
                 if (p.PlayerName == "Player"+clientId)
                 {
