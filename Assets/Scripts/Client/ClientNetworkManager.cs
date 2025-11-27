@@ -3,7 +3,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Collections;
-
+using System;
 public class ClientNetworkManager : MonoBehaviour
 {
     public string ip="127.0.0.1";

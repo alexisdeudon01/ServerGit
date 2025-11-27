@@ -1,7 +1,5 @@
 using System;
-namespace Shared // Replace with your actual namespace if you have one
-{   
-    
+
     public class Player
     {
         public string PlayerName;
@@ -22,4 +20,4 @@ namespace Shared // Replace with your actual namespace if you have one
             CurrentSession = null;
         }
     }
-}
+

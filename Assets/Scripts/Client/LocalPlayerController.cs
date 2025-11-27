@@ -1,10 +1,10 @@
 using UnityEngine;
 
 using Unity.Netcode;
-using Shared;
+
 public class LocalPlayerController  : NetworkBehaviour
 {
-    [SerializeField] PlayerInput input;
+
     public Player localplayer;
     public Pion localpion;
     public void HandleLocalMovement(PlayerInput input)

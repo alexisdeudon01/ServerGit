@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System;
-namespace Shared // Replace with your actual namespace if you have one
-{   
     public class GameSession
     {
         public string SessionId;
@@ -32,4 +30,3 @@ namespace Shared // Replace with your actual namespace if you have one
                 player.CurrentSession = null;
         }
     }   
-}

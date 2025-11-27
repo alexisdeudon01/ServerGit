@@ -1,6 +1,5 @@
 using System;
-namespace Shared // Replace with your actual namespace if you have one
-{   
+
     public enum MoveDirection
     {
         Forward,
@@ -38,4 +37,3 @@ namespace Shared // Replace with your actual namespace if you have one
         public void MoveLeft()     => Move(MoveDirection.Left);
         public void MoveRight()    => Move(MoveDirection.Right);
     }
-}

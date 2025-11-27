@@ -1,8 +1,6 @@
 // Assets/Scripts/Shared/Config.cs
 using UnityEngine;
 using System;
-namespace Shared // Replace with your actual namespace if you have one
-{   
 
 [CreateAssetMenu(fileName = "Config", menuName = "Game/Config")]
     public class Config : ScriptableObject
@@ -11,4 +9,4 @@ namespace Shared // Replace with your actual namespace if you have one
         public float moveSpeed = 5f;
         public int tickRate = 30;
     }
-}
+
