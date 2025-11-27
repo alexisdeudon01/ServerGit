@@ -1,0 +1,3 @@
+repository "Game1/Game1Cloud@9071724079816@cloud"
+  path "/"
+    smartbranch "/main"

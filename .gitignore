@@ -1,0 +1,31 @@
+﻿[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+
+# Cache
+[Bb]ehaviour/
+DerivedDataCache/
+
+# VS / Rider / IDE
+.vs/
+.idea/
+*.sln
+*.csproj
+*.user
+*.userprefs
+*.tmp
+*.pidb
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Autres
+*.bak
+*.old
+*.orig

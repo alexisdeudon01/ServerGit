@@ -1,0 +1,103 @@
+﻿@startuml
+class ClientNetworkManager {
+    + isConnected : bool
+    + joinSessionRequest(sessionId : string) : void
+    + sendMoveCommand(pion : Pion) : void
+}
+class GameManager {
+    + config : Config
+    + currentSession : GameSession
+    + currentMatchInProgress : bool
+    + InitGame() : void
+    + startMatch() : void
+    + endMatch() : void
+}
+class LocalPlayerController {
+    + localplayer : Player
+    + localpion : Pion
+    + HandleLocalMovement(input : PlayerInput) : void
+}
+class PlayerInput {
+}
+class PersistenceManager {
+}
+class PhysicSystem {
+}
+class PionServerController {
+}
+class PlayerServerController {
+}
+class ServerGameManager {
+    + config : Config
+    + currentSession : GameSession
+    + currentMatchInProgress : bool
+    + createSession() : void
+    + endSession() : void
+    + Tick(deltaTime : float) : void
+}
+class ServerNetworkManager {
+    + StartServer() : void
+    + StopServer() : void
+    + ReceiveMoveCommand(player : Player, pion : Pion) : void
+}
+class SessionManager {
+    + maxSessions : int
+    + activeSessionsCount : int
+    + CreateSession() : void
+    + FindSessionForPlayer(player : Player) : GameSession
+    + AddPlayerToSession(player : Player, session : GameSession) : void
+    + RemovePlayerFromSession(player : Player, session : GameSession) : void
+}
+class Config {
+}
+class GameSession {
+    + SessionId : string
+    + MaxPlayers : int
+    + CanAcceptPlayer() : bool
+    + AddPlayer(player : Player) : void
+    + RemovePlayer(player : Player) : void
+}
+class Pion {
+    + X : int
+    + Y : int
+    + Move(direction : MoveDirection) : void
+    + MoveForward() : void
+    + MoveBackward() : void
+    + MoveLeft() : void
+    + MoveRight() : void
+}
+class Player {
+    + PlayerName : string
+    + Email : string
+    + CurrentSession : GameSession
+    + JoinSession(session : GameSession) : void
+    + LeaveSession() : void
+}
+MonoBehaviour <|-- ClientNetworkManager
+MonoBehaviour <|-- GameManager
+NetworkBehaviour <|-- LocalPlayerController
+MonoBehaviour <|-- PlayerInput
+MonoBehaviour <|-- PersistenceManager
+MonoBehaviour <|-- PhysicSystem
+MonoBehaviour <|-- PionServerController
+NetworkBehaviour <|-- PlayerServerController
+MonoBehaviour <|-- ServerGameManager
+MonoBehaviour <|-- ServerNetworkManager
+MonoBehaviour <|-- SessionManager
+ScriptableObject <|-- Config
+ClientNetworkManager --> Pion : parameter
+GameManager --> Config : field
+GameManager --> GameSession : field
+LocalPlayerController --> Player : field
+LocalPlayerController --> Pion : field
+LocalPlayerController --> PlayerInput : parameter
+ServerGameManager --> Config : field
+ServerGameManager --> GameSession : field
+ServerNetworkManager --> Player : parameter
+ServerNetworkManager --> Pion : parameter
+SessionManager --> Player : parameter
+SessionManager --> GameSession : parameter
+GameSession --> Player : parameter
+Player --> GameSession : field
+Player --> GameSession : parameter
+@enduml
