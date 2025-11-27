@@ -1,88 +1,93 @@
 using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+
 public class SessionManager : MonoBehaviour
 {
-    public SessionManager Instance { get; set; }
 
-    private void Awake()
+
+   
+    private int maxSessions=10;
+    private List<GameSession> sessions = new List<GameSession>();
+
+    public IReadOnlyList<GameSession> Sessions => sessions;
+    public static SessionManager Instance { get; private set; }
+    public List<GameSession> GetSessions()
+    {
+        return sessions;
+    }
+    public void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
     }
-    [SerializeField] GameSession session;
-    public int maxSessions;
-    public int activeSessionsCount;
-    public List<GameSession> sessions = new List<GameSession>();
+
     public List<GameSession> GetAllSessions()
     {
-        return sessions;
+        // retourne une copie ou IReadOnlyList pour éviter modification externe
+        return new List<GameSession>(sessions);
     }
 
     public GameSession CreateSession()
     {
-        if (activeSessionsCount >= maxSessions) return null;
+        if (sessions.Count >= maxSessions) return null;
 
-        session = new GameSession();
-        activeSessionsCount++;
-        sessions.Add(session);
-
-        return session;
+        var newSession = new GameSession();
+        sessions.Add(newSession);
+        return newSession;
     }
+
     public GameSession FindSessionForPlayer(Player player)
     {
-        foreach(GameSession gs in GameManager.Instance.sessionManager.GetAllSessions())
-        {
-            foreach(Player p in gs.Players)
-            {
-                if (p == player)
-                {
-                    return gs;
-                }
-            }
-        }
+        if (player == null) return null;
 
+        foreach (var gs in sessions)
+        {
+            if (gs.Players.Contains(player))
+                return gs;
+        }
         return null;
     }
-    public void AddPlayerToSession(Player player, GameSession session)
+
+    public bool AddPlayerToSession(Player player, GameSession session)
     {
-        if (session == null) return;
-        if (player == null) return;
-        if (!session.CanAcceptPlayer()) return;
+        if (session == null || player == null) return false;
+        if (!session.CanAcceptPlayer()) return false;
 
         session.AddPlayer(player);
-
+        return true;
     }
-    public void RemovePlayerFromSession(Player player, GameSession session)
+
+    public bool RemovePlayerFromSession(Player player, GameSession session)
     {
-        if (session == null) return;
-        if (player == null) return;
+        if (session == null || player == null) return false;
 
-        session.RemovePlayer(player);   
+        session.RemovePlayer(player);
+        return true;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(session==null)
+        // Optionnel : créer une session automatiquement si aucune
+        if (sessions.Count == 0)
         {
             CreateSession();
         }
-        else{
-            Debug.Log("Session already exists");
+        else
+        {
+            Debug.Log("Existing session(s) detected on start.");
         }
-        
     }
 
-    // Update is called once per frame
+    // Update si besoin — sinon tu peux l’enlever
     void Update()
     {
-        
     }
 }

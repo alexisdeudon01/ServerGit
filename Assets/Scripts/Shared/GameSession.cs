@@ -9,8 +9,8 @@ using System;
         public GameSession()
         {
             Players = new List<Player>();
-            SessionId = GameManager.Instance.sessionManager.sessions.Count;
-            GameManager.Instance.sessionManager.sessions.Add(this);
+            SessionId = SessionManager.Instance.GetSessions().Count;
+            SessionManager.Instance.GetSessions().Add(this);
             SessionId++;
         }
         public bool CanAcceptPlayer()
