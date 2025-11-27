@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using System;
     public class GameSession
     {
-        public string SessionId;
+        public static string SessionId=0;
         public int MaxPlayers;
 
         public List<Player> Players = new List<Player>();
-
+        public GameSession()
+        {
+            Players = new List<Player>();
+            SessionId++;
+        }
         public bool CanAcceptPlayer()
         {
             return Players.Count < MaxPlayers;

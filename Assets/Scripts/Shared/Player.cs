@@ -6,7 +6,11 @@ using System;
         public string Email;
 
         public GameSession CurrentSession;
-
+        public Player(string playerName, string email)
+        {
+            PlayerName = playerName;
+            Email = email;
+        }
         public void JoinSession(GameSession session)
         {
             CurrentSession = session;
