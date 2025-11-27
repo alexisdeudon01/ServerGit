@@ -11,11 +11,16 @@ public class ClientNetworkManager : MonoBehaviour
 
     public bool isConnected { get; private set; }
 
-    private SessionManager sessionManager=SessionManager.Instance;
+    public SessionManager sessionManager = SessionManager.Instance;
 
     void Awake()
     {
-        if (NetworkManager.Singleton == null)
+     
+    }
+
+    void Start()
+    {
+           if (NetworkManager.Singleton == null)
         {
             Debug.LogError("ClientNetworkManager: No NetworkManager in scene!");
             enabled = false;  // disable this component
@@ -28,10 +33,6 @@ public class ClientNetworkManager : MonoBehaviour
             enabled = false;
             return;
         }
-    }
-
-    void Start()
-    {
         var net = NetworkManager.Singleton;
         var transport = net.GetComponent<UnityTransport>();
         if (transport == null)

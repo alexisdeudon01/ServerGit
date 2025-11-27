@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour
     {
         Debug.Log("Menu: NetworkManager singleton instance already exists.");
         // Si un autre NetworkManager existe, on détruit celui-ci
-        Destroy(gameObject);
+       // Destroy(gameObject);
     }
 }
 
