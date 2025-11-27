@@ -1,101 +1,106 @@
-
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Collections;
-using System;
+using System.Collections.Generic;
+
 public class ClientNetworkManager : MonoBehaviour
 {
-    public string ip;
-    public int port;
-    public bool isConnected;
+    [Header("Connection settings")]
+    public string ip = "127.0.0.1";
+    public ushort port = 7778;
 
-    public SessionManager sessionManager=SessionManager.Instance;
-   public void Awake()
+    public bool isConnected { get; private set; }
+
+    private SessionManager sessionManager=SessionManager.Instance;
+
+    void Awake()
     {
-        if (sessionManager == null)
+        if (NetworkManager.Singleton == null)
         {
-            Debug.LogError("SessionManager not set on ClientNetworkManager!");
+            Debug.LogError("ClientNetworkManager: No NetworkManager in scene!");
+            enabled = false;  // disable this component
             return;
         }
-    ip="127.0.0.1";
-    port=7779;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Start()
-    {
-        
-           var net = NetworkManager.Singleton;
-    var transport = net.GetComponent<UnityTransport>();
-  
-    // Vérifier que l'ip n'est pas vide
-    if (string.IsNullOrWhiteSpace(ip))
-    {
-        Debug.LogError("ClientNetworkManager: IP address is empty or invalid!");
-        return;
-    }
 
-    transport.SetConnectionData(ip, (ushort)port, null);
-
-    if (!net.StartClient())
-{
-    Debug.LogError("Cannot start client.");
-    return;
-}
-else
-{
-    Debug.Log("Client start requested — waiting for real connect...");
-    isConnected = false; // ne pas set true tout de suite
-
-    net.OnClientConnectedCallback += OnClientConnected;
-   // net.OnClientDisconnectCallback += OnClientDisconnected; // gérer aussi l’échec
-}
-    }
-
-private  void OnClientConnected(ulong clientId)
-    {
-        Debug.Log("Client connected with ID: " + clientId);
-        isConnected = true;
-        Player player= new Player("Player"+clientId, "player@email.com");
-        Debug.Log("Player created: " + player.PlayerName);
-        String line="";        
-        foreach(GameSession gs in sessionManager.GetSessions())
+        if (sessionManager == null)
         {
-            Debug.Log("Checking session: " + gs.SessionId+" with " + gs.Players.Count + " players.  Max players: " + gs.MaxPlayers      );
-              Console.Write("Press Y to join this session or N to skip: ");
-                line = Console.ReadLine();
-                if (line == "Y" || line == "y")
-                {
-                    
-                sessionManager.AddPlayerToSession(player, gs);
-                Debug.Log("Player " + player.PlayerName + " added to session " + sessionManager.GetSessions()[gs.SessionId].SessionId);
-                    
-                    return;
-            }
+            Debug.LogError("ClientNetworkManager: SessionManager not found!");
+            enabled = false;
+            return;
         }
-        Console.WriteLine("No suitable session found. Creating a new session.");
-        sessionManager.CreateSession();
-        sessionManager.AddPlayerToSession(player, sessionManager.GetSessions()[sessionManager.GetSessions().Count - 1] );
-        Debug.Log("Player " + player.PlayerName + " added to new session " + sessionManager.GetSessions()[sessionManager.GetSessions().Count - 1].SessionId);
     }
-   /* private void OnClientDisconnected(ulong clientId)
+
+    void Start()
     {
-        foreach(GameSession gs in sessionManager.GetAllSessions())
+        var net = NetworkManager.Singleton;
+        var transport = net.GetComponent<UnityTransport>();
+        if (transport == null)
         {
-            foreach(Player p in gs.Players)
-            {
-                if (p.PlayerName == "Player"+clientId)
-                {
-                    sessionManager.RemovePlayerFromSession(p, gs);
-                    Debug.Log("Player " + p.PlayerName + " removed from session " + gs.SessionId);
-                    break;
-                }
-            }
+            Debug.LogError("ClientNetworkManager: UnityTransport component missing on NetworkManager!");
+            return;
         }
-        Debug.Log("Client disconnected with ID: " + clientId);
+
+        if (string.IsNullOrWhiteSpace(ip))
+        {
+            Debug.LogError("ClientNetworkManager: IP address is empty or invalid!");
+            return;
+        }
+
+        transport.SetConnectionData(ip, port, null);
+
+        bool started = net.StartClient();
+        if (!started)
+        {
+            Debug.LogError($"ClientNetworkManager: StartClient() failed for {ip}:{port}");
+            return;
+        }
+
+        Debug.Log($"ClientNetworkManager: Client start requested — connecting to {ip}:{port}");
         isConnected = false;
-    }*/
-   
 
+        net.OnClientConnectedCallback += OnClientConnected;
+        net.OnClientDisconnectCallback += OnClientDisconnected;
+    }
+
+    private void OnDestroy()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        if (clientId != NetworkManager.Singleton.LocalClientId)
+        {
+            // un autre client s'est connecté — si tu ne gères que le client local, ignore
+            return;
+        }
+
+        Debug.Log("ClientNetworkManager: Connected to server, local client ID = " + clientId);
+        isConnected = true;
+
+        // Exemple simple : demander de rejoindre une session via UI plutôt que Console
+        // Ici tu peux déclencher un événement Unity ou appeler une méthode UI
+    }
+
+    private void OnClientDisconnected(ulong clientId)
+    {
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.Log("ClientNetworkManager: Disconnected from server");
+            isConnected = false;
+        }
+    }
+
+    // Méthode pour demander au serveur d'ajouter le joueur à une session
+    public void RequestJoinSession()
+    {
+        if (!isConnected) return;
+
+        // Par ex., tu pourrais appeler un ServerRpc ici
+        // Serveur: ajouter le Player + session logique
+    }
 }
-

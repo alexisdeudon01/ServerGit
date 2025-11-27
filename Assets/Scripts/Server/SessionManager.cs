@@ -1,4 +1,6 @@
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 
 public class SessionManager : MonoBehaviour
@@ -19,11 +21,13 @@ public class SessionManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            Debug.Log("SessionManager: Setting SessionManager singleton instance.");
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this)
         {
+            Debug.Log("SessionManager: SessionManager singleton instance already exists.");
             Destroy(gameObject);
             return;
         }
