@@ -1,4 +1,6 @@
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 
 public class SessionManager : MonoBehaviour
@@ -17,16 +19,7 @@ public class SessionManager : MonoBehaviour
     }
     public void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+
     }
 
     public List<GameSession> GetAllSessions()
@@ -75,6 +68,18 @@ public class SessionManager : MonoBehaviour
 
     void Start()
     {
+                if (Instance == null)
+        {
+            Debug.Log("SessionManager: Setting SessionManager singleton instance.");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Instance != this)
+        {
+            Debug.Log("SessionManager: SessionManager singleton instance already exists.");
+            Destroy(gameObject);
+            return;
+        }
         // Optionnel : créer une session automatiquement si aucune
         if (sessions.Count == 0)
         {
