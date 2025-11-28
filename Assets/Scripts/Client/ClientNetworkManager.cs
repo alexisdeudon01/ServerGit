@@ -20,6 +20,8 @@ public class ClientNetworkManager : MonoBehaviour
 
     void Start()
     {
+        LinuxConsole.OpenTerminal();
+
            if (NetworkManager.Singleton == null)
         {
             Debug.LogError("ClientNetworkManager: No NetworkManager in scene!");
