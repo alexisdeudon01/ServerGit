@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
-
+using System;
 public class ClientNetworkManager : MonoBehaviour
 {
     [Header("Connection settings")]
@@ -76,17 +76,20 @@ public class ClientNetworkManager : MonoBehaviour
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
         {
-            Debug.Log("Connection refused, already connec"ted)
+            Debug.Log("Connection refused, already connec");
             // un autre client s'est connecté — si tu ne gères que le client local, ignore
             return;
         }
 
         Debug.Log("ClientNetworkManager: Connected to server, local client ID = " + clientId);
         isConnected = true;
-        String nom=Console.write("Quel est votre pseudo");
+        String nom;
+        Console.Write("Quel est votre pseudo");
+        nom = Console.ReadLine();
         Player p=new Player(nom,"");
-        
 
+        GameSession sess = sessionManager.GameSessionChooseSession(p);
+       
         // Exemple simple : demander de rejoindre une session via UI plutôt que Console
         // Ici tu peux déclencher un événement Unity ou appeler une méthode UI
     }

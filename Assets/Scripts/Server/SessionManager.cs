@@ -13,8 +13,9 @@ public class SessionManager : MonoBehaviour
     [SerializeField] private int maxSessions = 10;
     private List<GameSession> sessions = new List<GameSession>();
 
-    // Exposition en lecture seule
-    public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
+    // Exposition en lecture seule 
+    // 
+        public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
     public GameSession GameSessionChooseSession(Player p){
         if (sessions.Count() == 0)
         {
