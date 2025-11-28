@@ -15,8 +15,10 @@ public class SessionManager : MonoBehaviour
 
     // Exposition en lecture seule 
     // 
-        public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
-    public GameSession GameSessionChooseSession(Player p){
+
+    public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
+    public GameSession GameSessionChooseSession(Player p)
+    {
         if (sessions.Count() == 0)
         {
             string b;
@@ -56,7 +58,7 @@ public class SessionManager : MonoBehaviour
         }
         return null;
     }
-  
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -122,16 +124,20 @@ public class SessionManager : MonoBehaviour
         }
         return null;
     }
-    public GameSession FindSessionById(int id){
-        foreach(GameSession cs in sessions){
-            if(cs.SessionId==id){
+    public GameSession FindSessionById(int id)
+    {
+        foreach (GameSession cs in sessions)
+        {
+            if (cs.SessionId == id)
+            {
                 return cs;
             }
-        }return null;
+        }
+        return null;
     }
     public List<GameSession> GetSessions()
     {
         return sessions;
-  }
     }
+}
 
