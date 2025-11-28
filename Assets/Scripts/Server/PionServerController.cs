@@ -11,6 +11,7 @@ public class PionServerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("sd");
         
     }
 }

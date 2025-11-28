@@ -1,6 +1,9 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using System.Linq;
+using UnityEditor;
 
 public class SessionManager : MonoBehaviour
 {
@@ -12,37 +15,47 @@ public class SessionManager : MonoBehaviour
 
     // Exposition en lecture seule
     public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
-    public GameSessionChooseSession(Player p){
-        if(sessions.Count()==0)
+    public GameSession GameSessionChooseSession(Player p){
+        if (sessions.Count() == 0)
         {
-            String b=Console.write("No sessions created, would you like to create one")
-            if(b=='Y'){
-                return CreateSession()
+            string b;
+            Console.Write("No sessions created, would you like to create one");
+            b = Console.ReadLine();
+            if (b == "Y")
+            {
+                return CreateSession();
             }
-            else{
-                return;
+            else
+            {
+                return null;
             }
         }
-        else{
-            Console.write("Sessions en cours");
-            int i=1;
-            foeach(GameSession gs in sessions){
-                int id=gs.SessionId;
-                 List<Player>Players=gs.ListPlayers();
-                Console.write(id+ " "+sessions.ListPlayers.Count())
-                foreach(Player player in Players){
-                    Console.write("Player "+player.name);
+        else
+        {
+            Console.Write("Sessions en cours");
+            int i = 1;
+            foreach (GameSession gs in sessions)
+            {
+                int id = gs.SessionId;
+                List<Player> Players = gs.Players;
+                Console.Write(id + " " + gs.Players.Count());
+                foreach (Player player in Players)
+                {
+                    Console.Write("Player " + player.PlayerName);
                 }
-                
-                
+
+
 
             }
-            String aa=Console.write("Quel session voulez vous ?")
-            GameSession choosenSession=FindSessionById(aa);
-            AddPlayerToSession(p,choosenSession);
+            int aa;
+            Console.Write("Quel session voulez vous ?");
+            aa = Console.Read();
+            GameSession choosenSession = FindSessionById(aa);
+            AddPlayerToSession(p, choosenSession);
         }
+        return null;
     }
-    public GameSessio
+  
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -51,7 +64,7 @@ public class SessionManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Debug.Log
+        Debug.Log("fdsl");
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
@@ -110,15 +123,14 @@ public class SessionManager : MonoBehaviour
     }
     public GameSession FindSessionById(int id){
         foreach(GameSession cs in sessions){
-            if(cs.SessionId=id){
+            if(cs.SessionId==id){
                 return cs;
             }
-        }
+        }return null;
     }
     public List<GameSession> GetSessions()
     {
         return sessions;
+  }
     }
-    
-}
->>>>>>> 678951c (ezflksk)
+
