@@ -21,6 +21,8 @@ public class PlayerServerController : NetworkBehaviour
 
         if (input.sqrMagnitude > 0.01f)
         {
+            
+
             // Envoie une RPC au serveur pour demander le move
             RequestMoveServerRpc(input);
         }
