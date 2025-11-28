@@ -76,12 +76,16 @@ public class ClientNetworkManager : MonoBehaviour
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
         {
+            Debug.Log("Connection refused, already connec"ted)
             // un autre client s'est connecté — si tu ne gères que le client local, ignore
             return;
         }
 
         Debug.Log("ClientNetworkManager: Connected to server, local client ID = " + clientId);
         isConnected = true;
+        String nom=Console.write("Quel est votre pseudo");
+        Player p=new Player(nom,"");
+        
 
         // Exemple simple : demander de rejoindre une session via UI plutôt que Console
         // Ici tu peux déclencher un événement Unity ou appeler une méthode UI

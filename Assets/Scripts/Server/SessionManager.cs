@@ -97,7 +97,37 @@ public class SessionManager : MonoBehaviour
 
     // Exposition en lecture seule
     public IReadOnlyList<GameSession> Sessions => sessions.AsReadOnly();
+    public GameSessionChooseSession(Player p){
+        if(sessions.Count()==0)
+        {
+            String b=Console.write("No sessions created, would you like to create one")
+            if(b=='Y'){
+                return CreateSession()
+            }
+            else{
+                return;
+            }
+        }
+        else{
+            Console.write("Sessions en cours");
+            int i=1;
+            foeach(GameSession gs in sessions){
+                int id=gs.SessionId;
+                 List<Player>Players=gs.ListPlayers();
+                Console.write(id+ " "+sessions.ListPlayers.Count())
+                foreach(Player player in Players){
+                    Console.write("Player "+player.name);
+                }
+                
+                
 
+            }
+            String aa=Console.write("Quel session voulez vous ?")
+            GameSession choosenSession=FindSessionById(aa);
+            AddPlayerToSession(p,choosenSession);
+        }
+    }
+    public GameSessio
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -106,7 +136,7 @@ public class SessionManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        Debug.Log
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
@@ -163,9 +193,17 @@ public class SessionManager : MonoBehaviour
         }
         return null;
     }
+    public GameSession FindSessionById(int id){
+        foreach(GameSession cs in sessions){
+            if(cs.SessionId=id){
+                return cs;
+            }
+        }
+    }
     public List<GameSession> GetSessions()
     {
         return sessions;
     }
+    
 }
 >>>>>>> 678951c (ezflksk)

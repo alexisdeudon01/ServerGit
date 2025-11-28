@@ -493,9 +493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba24c2b505a1b44f9065f353a00a586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClientNetworkManager
-  ip: 
-  port: 0
-  isConnected: 0
+  ip: 127.0.0.1
+  port: 7778
   sessionManager: {fileID: 895417838}
 --- !u!4 &895417835
 Transform:
@@ -524,6 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514f4b8dc16b2284a8a0abdd2590793a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SessionManager
+  maxSessions: 10
 --- !u!114 &895417839
 MonoBehaviour:
   m_ObjectHideFlags: 0
